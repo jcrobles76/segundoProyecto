@@ -15,7 +15,9 @@ import { DatabaseOptionsPage } from '../database-options/database-options';
 export class RecipesPage {
   recipes: Recipe[];
 
-  constructor(private navCtrl: NavController, private recipesService: RecipeService, private popoverCtrl: PopoverController,
+  constructor(private navCtrl: NavController,
+    private recipesService: RecipeService,
+    private popoverCtrl: PopoverController,
     private loaderCtrl: LoadingController,
     private alertCtrl: AlertController,
     private authService: AuthService) {}
@@ -40,6 +42,9 @@ export class RecipesPage {
     popover.present({ev: event});
     popover.onDidDismiss(
       data => {
+        if (!data) {
+          return;
+        }
         if(data.action == 'load') {
           loading.present();
           this.authService.getActiveUSer().getIdToken()

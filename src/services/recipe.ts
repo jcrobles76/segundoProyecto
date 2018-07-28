@@ -37,7 +37,19 @@ export class RecipeService {
 
     fetchList(token: string) {
         const userId = this.authService.getActiveUSer().uid;
-        return this.Http.get('https://ionic2-recipesbook.firebaseio.com/'+ userId + '/recipes.json?auth='+ token);
+        return this.Http.get('https://ionic2-recipesbook.firebaseio.com/'+ userId + '/recipes.json?auth='+ token)
+        .do((recipes: Recipe[]) => {
+            if(recipes) {
+                for(let recipe of recipes) {
+                    if( !recipe.hasOwnProperty('ingredients') ) {
+                        recipe.ingredients = [];
+                    }
+                }
+                    this.recipes = recipes;
+            } else {
+                this.recipes = [];
+            }
+        });
 
     }
 
